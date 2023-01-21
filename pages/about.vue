@@ -6,7 +6,7 @@
     >
       <h1>Site Reviews</h1>
     </div>
-    <div class="p-5 m-auto mt-4 grid xl:grid-cols-4 gap-4 md:grid-cols-2 sm:grid-cols-1">
+    <div id="bg" class="p-5 m-auto mt-4 grid xl:grid-cols-4 gap-4 md:grid-cols-2 sm:grid-cols-1">
       <div v-for="user in displayedPosts" :key="user.id">
         <div
           id="bg"
@@ -37,3 +37,8 @@ export default {
   components: { NavBar, PaginationVue }
 }
 </script>
+<style scoped>
+#bg {
+  background: url("static/img.png");
+}
+</style>

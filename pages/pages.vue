@@ -1,16 +1,28 @@
 <template>
-  <div id="app">
-    <h2>Vue Pagination</h2>
-    <ul class="flex-container">
-      <li v-for="item in listItems" :key="item.id" class="flex-item">
-        <h4>{{ item.email }}</h4>
-        <h4>{{ item.name }}</h4>
-        <h4>{{ item.body }}</h4>
-      </li>
-      <li v-if="listItems.length === 0" class="flex-item center">
-        No Record Found
-      </li>
-    </ul>
+  <div>
+    <div
+      class="w-full flex items-center justify-center text-3xl text-sky-500 font-Rampart font-semibold tracking-normal"
+    >
+      <h1>Site Reviews</h1>
+    </div>
+    <div class="p-5 m-auto mt-4 grid xl:grid-cols-4 gap-4 md:grid-cols-2 sm:grid-cols-1">
+      <div v-for="item in listItems" :key="item.id">
+        <div
+          id="bg"
+          class="flex flex-col justify-center items-center shadow-3xl shadow-cyan-500/50  text-black h-72 m-auto text-center bg-gray-50"
+        >
+          <div class="font-bold">
+            <h4>Passenger: {{ item.name }}</h4>
+          </div>
+          <div class="flex">
+            <h4>Airline: {{ item.airline[0] && item.airline[0].name }}</h4>
+          </div>
+          <div>
+            <h4>Country: {{ item.airline[0] && item.airline[0].country }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
     <Pagination v-if="listItems" :total-pages="totalPages" :per-page="recordsPerPage" :current-page="page" @pagechanged="onPageChange" />
   </div>
 </template>
@@ -38,12 +50,12 @@ export default {
   },
   methods: {
     loadListItem () {
-      axios.get('https://jsonplaceholder.typicode.com/comments?_limit=40')
+      axios.get(`https://api.instantwebtools.net/v1/passenger?page=${this.page}&size=${this.recordsPerPage}`)
         .then((response) => {
           console.log('response', response)
-          this.listItems = response.data
-          this.totalPages = Math.floor(response.data.length / this.recordsPerPage) // Calculate total records
-          this.totalRecords = response.data.length
+          this.listItems = response.data.data
+          this.totalPages = Math.floor(response.data.totalPassengers / this.recordsPerPage) // Calculate total records
+          this.totalRecords = response.data.totalPassengers
         })
     },
     onPageChange (page) {
@@ -54,56 +66,8 @@ export default {
 }
 
 </script>
-
-  <style scoped>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-  h2 {
-    text-align: center;
-  }
-  ul li {
-    list-style-type: none;
-  }
-  ul.flex-container {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex-direction: row wrap;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  ul.flex-container .flex-item{
-    background: tomato;
-      width: calc(100% / 5.5);
-      padding: 5px;
-      height: auto;
-      margin-top: 10px;
-      color: white;
-      font-weight: bold;
-      text-align: center;
-  }
-  ul.flex-container img{
-    display: initial;
-    width: 200px;
-  }
-  .showItems {
-    display: inline-block;
-    margin-left: -35px;
-  }
-  .showItems  li {
-      list-style-type: none;
-      display: inline-block;
-      margin-left: 10px;
-    }
-  </style>
+<style scoped>
+#bg {
+  background: url("static/img.png");
+}
+</style>
